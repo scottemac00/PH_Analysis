@@ -96,3 +96,40 @@ AND (hire_date BETWEEN '1985-01-01' AND '1988-12-31');
 	-- Verify table info and export by selecting 'Import/Export' from table in Browser
 SELECT *
 FROM retirement_info
+
+-- Drop Table to then recreate by JOIN of employees and dept_emp
+DROP TABLE retirement_info;
+
+-- Create new table for retiring employees
+SELECT emp_no, first_name, last_name
+INTO retirement_info
+FROM employees
+WHERE (birth_date BETWEEN '1952-01-01' AND '1955-12-31')
+AND (hire_date BETWEEN '1985-01-01' AND '1988-12-31');
+-- Check the table
+SELECT * FROM retirement_info;
+
+-- Return each department name from the departments table + emp no's and from/to dates
+-- from the dept_manager table using INNER JOIN
+-- Shorten the table names and define the ALIAS before the end of the code block
+SELECT d.dept_name,
+     dm.emp_no,
+     dm.from_date,
+dm.to_date
+FROM departments as d
+INNER JOIN dept_manager as dm
+ON d.dept_no = dm.dept_no;
+
+-- Use LEFT JOIN to include retirement_ino and dept_emp data
+SELECT ri.emp_no,
+	 ri.first_name,
+	 ri.last_name,
+de.to_date
+INTO current_emp
+FROM retirement_info as ri
+LEFT JOIN dept_emp as de
+ON ri.emp_no = de.emp_no
+WHERE de.to_date = ('9999-01-01');
+
+SELECT *
+FROM current_emp

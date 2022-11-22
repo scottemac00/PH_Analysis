@@ -1,3 +1,6 @@
+-- Deliverable 1: Create a Retirement Titles table that holds all the
+-- titles of employees who were born b/w 01-01-1952 and 12-31-1955
+
 -- Drop all tables
 DROP TABLE IF EXISTS departments CASCADE;
 DROP TABLE IF EXISTS employees CASCADE;
@@ -7,8 +10,6 @@ DROP TABLE IF EXISTS dept_emp CASCADE;
 DROP TABLE IF EXISTS titles CASCADE;
 
 -- Creating tables for PH-EmployeeDB
-
--- note the difference b/w a column constraint & a table constraint
 
 CREATE TABLE departments (
 	 dept_no VARCHAR(5) NOT NULL,
@@ -29,10 +30,6 @@ CREATE TABLE employees (
 	PRIMARY KEY (emp_no)
 );
 SELECT * FROM employees;
-
--- Primary keys must contain UNIQUE values, and cannot contain NULL values
--- A table can only have ONE primary key; and in the table, this primary
--- key can consist of single or multiple columns (fields)
 
 CREATE TABLE dept_manager (
 dept_no VARCHAR(5) NOT NULL,
@@ -71,7 +68,6 @@ CREATE TABLE dept_emp (
 -- ALTER TABLE table_name
 -- ADD FOREIGN KEY (dept_no) REFERENCES departments(dept_no);
 
-
 SELECT * FROM dept_emp;
 
 CREATE TABLE titles (
@@ -98,13 +94,19 @@ FROM titles;
 -- Filter the data on the birth_date column to retrieve the employees
 -- who were born b/w 1952 and 1955, then order by emp_no
 
-SELECT e.emp_no, e.first_name, e.last_name, e.birth_date, ti.title, ti.from_date, ti.to_date
+SELECT em.emp_no, 
+em.first_name, 
+em.last_name, 
+em.birth_date, 
+ti.title, 
+ti.from_date, 
+ti.to_date
 INTO retirement_titles
-FROM employees AS e
+FROM employees AS em
 JOIN titles as ti ON
-e.emp_no = ti.emp_no
-WHERE (e.birth_date BETWEEN '1952-01-01' AND '1955-12-31')
-ORDER BY e.emp_no, e.first_name, e.last_name, ti.title, ti.from_date, ti.to_date;
+em.emp_no = ti.emp_no
+WHERE (em.birth_date BETWEEN '1952-01-01' AND '1955-12-31')
+ORDER BY em.emp_no, em.first_name, em.last_name, ti.title, ti.from_date, ti.to_date;
 
 SELECT * FROM retirement_titles;
 
@@ -128,3 +130,23 @@ GROUP BY title
 ORDER BY count DESC;
 
 SELECT * FROM retiring_titles
+
+-- DELIVERABLE 2
+-- Create a mentorship-eligibility table that holds current employees who were born b/w
+-- 01-01-1965 and 12-31-1965
+SELECT DISTINCT ON (em.emp_no) em.emp_no, 
+em.first_name, 
+em.last_name, 
+em.birth_date, 
+de.from_date, 
+de.to_date, 
+ti.title
+INTO mentorship_eligibility
+FROM employees as em
+JOIN dept_emp as de
+	ON em.emp_no = de.emp_no
+JOIN titles as ti
+	ON em.emp_no = ti.emp_no
+WHERE (de.to_date = '9999-01-01') 
+	AND (em.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
+ORDER BY em.emp_no;

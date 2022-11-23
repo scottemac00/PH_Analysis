@@ -8,7 +8,7 @@
    ### Four Key Points
    1. Creating the Retirements Titles table and further distilling the data verified that there are over 72,000 PH employees eligible for retirement.
    2. A majority of the personnel hold "Senior" positions in Engineering and on the Staff.
-   3. There are 1,549 employees eligible for mentorship towards positions of increasing responsibility in the company (based on the given parameters).
+   3. There are 1,549 employees eligible for mentorship roles in the company (based on the given parameters).
    4. Not all of the above-mentioned mentorship-eligible employees will be leadership candidates. Further analysis is required!
    ### Supporting Information
    - The code used for this project may be accessed here: [Queries](https://github.com/scottemac00/PH_Analysis/tree/main/Queries)
